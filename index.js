@@ -51,6 +51,20 @@ app.all('/', (req, res) => {
     })
 })
 
+// /departments
+app.use('/departments', require('./src/routes/department.router'))
+// /personnels
+app.use('/personnels', require('./src/routes/personnel.router'))
+
+
+// HomePath:
+app.all('/', (req, res) => {
+    res.send({
+        error: false,
+        message: 'Welcome to PERSONNEL API',
+    })
+})
+
 /* ------------------------------------------------------- */
 
 // errorHandler:

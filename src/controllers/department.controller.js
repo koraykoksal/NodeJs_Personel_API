@@ -1,64 +1,85 @@
 "use strict"
-const { model } = require('mongoose')
 /* -------------------------------------------------------
     EXPRESS - Personnel API
 ------------------------------------------------------- */
 
 const Department = require('../models/department.model')
 
+module.exports = {
 
-module.exports={
+    list: async (req, res) => {
 
-    list: async(req,res)=>{
+        // const data = await Department.find(search).sort(sort).skip(skip).limit(limit)
         const data = await res.getModelList(Department)
 
         res.status(200).send({
-            error:false,
-            data // cosnt data:data yerine sadece data yazılıp gönderilebilir
+            error: false,
+            detail: await res.getModelListDetails(Department),
+            data // data: data
         })
+
     },
-    create:async()=>{
-        const data = await res.create(req.body)
+
+    create: async (req, res) => {
+
+        const data = await Department.create(req.body)
 
         res.status(201).send({
-            error:false,
-            data // cosnt data:data yerine sadece data yazılıp gönderilebilir
+            error: false,
+            data
         })
+
     },
-    read:async()=>{
-        const data = await Department.findOne({_id:req.params.id})
+
+    read: async (req, res) => {
+
+        const data = await Department.findOne({ _id: req.params.id })
 
         res.status(200).send({
-            error:false,
-            data // cosnt data:data yerine sadece data yazılıp gönderilebilir
+            error: false,
+            data
         })
+
     },
-    update:async()=>{
-        //update işleminde ilk parametre filteleme ikinci parametre güncellenecek değer
-        const data = await Department.updateOne({_id:req.params.id},req.body)
+
+    update: async (req, res) => {
+
+        const data = await Department.updateOne({ _id: req.params.id }, req.body)
 
         res.status(202).send({
-            error:false,
-            data, // cosnt data:data yerine sadece data yazılıp gönderilebilir
-            // update işlemi olduktan sonra güncelenmiş datanın son halinide new valuesunda çalıştırdığımız değer ile görebiiriz.
-            new: await Department.findOne({_id:req.params.id})
-        })
-        
-    },
-    delete:async()=>{
-        //update işleminde ilk parametre filteleme ikinci parametre güncellenecek değer
-        const data = await Department.deleteOne({_id:req.params.id})
-
-        const statusCode = data.deletedCount>=1 ? true:false
-
-        //? delete işlemi sonrası deletedCount bilgisi 0 veya 1 olarak geliyor buradaki bilgiye göre status code ve eror bilgisi belirlenir
-
-        res.status(statusCode ? 204:404).send({
-            error:statusCode,
+            error: false,
             data,
-            new: await Department.findOne({_id:req.params.id})
+            new: await Department.findOne({ _id: req.params.id })
         })
-    }
+    },
+
+    delete: async (req, res) => {
+
+        const data = await Department.deleteOne({ _id: req.params.id })
+
+        res.status(data.deletedCount ? 204 : 404).send({
+            error: !data.deletedCount,
+            data
+        })
+
+        // const isDeleted = data.deletedCount >= 1 ? true : false
+
+        // res.status(isDeleted ? 204 : 404).send({
+        //     error: !isDeleted,
+        //     data
+        // })
+    },
+
+    personnels: async (req, res) => {
+
+        // const data = await Department.find(search).sort(sort).skip(skip).limit(limit)
+        const data = await res.getModelList(Department)
+
+        res.status(200).send({
+            error: false,
+            detail: await res.getModelListDetails(Department),
+            data // data: data
+        })
+
+    },
 }
-
-
