@@ -67,6 +67,17 @@ app.all('/', (req, res) => {
 
 /* ------------------------------------------------------- */
 
+
+app.use(async (req,res,next)=>{
+    next()
+})
+
+
+
+
+
+
+
 // errorHandler:
 app.use(require('./src/middlewares/errorHandler'))
 
